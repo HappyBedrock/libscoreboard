@@ -1,0 +1,8 @@
+name: libscoreboard
+api: 4.0.0
+author: vix
+description: Simple score board library
+version: 1.0.0
+antigen: happype\openapi\libscoreboard
+
+php: [8.0]
