@@ -27,8 +27,8 @@ final class ScoreboardSender implements Listener {
 
 	/** @var array<string, string> */
 	private static array $titles = []; // Cache for score board title
-	/** @var array */
-	private static array $lines = [];
+	/** @var array<string, string[]> */
+	private static array $lines = []; // Cache for score board lines
 
 	private function __construct() {}
 
@@ -80,9 +80,9 @@ final class ScoreboardSender implements Listener {
 	 * @param string[] $lines
 	 */
 	private static function updateLines(Player $player, array $lines): void {
-		$cached = self::$lines[$player->getName()] ?? null;
+		$cached = self::$lines[$player->getName()] ?? [];
 		$changed = $removed = [];
-		if($cached === null || count($lines) == count($cached)) {
+		if(count($lines) == count($cached)) {
 			foreach ($lines as $i => $line) {
 				if($cached[$i] != $lines) {
 					$changed[$i] = $line;
@@ -153,6 +153,8 @@ final class ScoreboardSender implements Listener {
 
 			return $entry;
 		}, array_keys($lines));
+
+		$player->getNetworkSession()->sendDataPacket($pk);
 	}
 
 	/**
