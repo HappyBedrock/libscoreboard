@@ -37,7 +37,7 @@ final class ScoreboardSender implements Listener {
 	}
 
 	public static function send(Player $player, string $text): void {
-		if(self::$players[$player->getName()] ?? "" == $text) {
+		if((self::$players[$player->getName()] ?? "") == $text) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ final class ScoreboardSender implements Listener {
 
 		self::formatLines($lines);
 		if(!array_key_exists($player->getName(), self::$lines)) {
-			self::changeLines($player, $lines);
+			self::sendLines($player, $lines);
 		} else {
 			self::updateLines($player, $lines);
 		}
@@ -84,7 +84,7 @@ final class ScoreboardSender implements Listener {
 		$changed = $removed = [];
 		if(count($lines) == count($cached)) {
 			foreach ($lines as $i => $line) {
-				if($cached[$i] != $lines) {
+				if($cached[$i] != $line) {
 					$changed[$i] = $line;
 				}
 			}
@@ -117,7 +117,7 @@ final class ScoreboardSender implements Listener {
 		}
 
 		self::removeLines($player, $removed);
-		self::changeLines($player, $changed);
+		self::sendLines($player, $changed);
 	}
 
 	private static function createScoreboardTitle(Player $player, string $title): void {
@@ -141,7 +141,7 @@ final class ScoreboardSender implements Listener {
 	/**
 	 * @param array<int, string> $lines
 	 */
-	private static function changeLines(Player $player, array $lines): void {
+	private static function sendLines(Player $player, array $lines): void {
 		$pk = new SetScorePacket();
 		$pk->type = SetScorePacket::TYPE_CHANGE;
 		$pk->entries = array_map(function (int $line) use ($lines, $player): ScorePacketEntry {
