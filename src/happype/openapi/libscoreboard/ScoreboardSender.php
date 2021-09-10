@@ -44,16 +44,18 @@ final class ScoreboardSender implements Listener {
 		$lines = explode("\n", $text);
 		$title = array_shift($lines);
 
+		$forceSendLines = false;
 		if(!array_key_exists($player->getName(), self::$titles) || self::$titles[$player->getName()] != $title) {
 			if(array_key_exists($player->getName(), self::$titles)) {
 				self::removeScoreboardTitle($player);
 			}
 
 			self::createScoreboardTitle($player, $title);
+			$forceSendLines = true;
 		}
 
 		self::formatLines($lines);
-		if(!array_key_exists($player->getName(), self::$lines)) {
+		if(!array_key_exists($player->getName(), self::$lines) || $forceSendLines) {
 			self::sendLines($player, $lines);
 		} else {
 			self::updateLines($player, $lines);
@@ -184,7 +186,7 @@ final class ScoreboardSender implements Listener {
 		$used = [];
 		foreach ($lines as $i => $line) {
 			while (in_array($line, $used)) {
-				$line .= " ";
+				$line .= "  ";
 			}
 
 			$lines[$i] = " $line ";
