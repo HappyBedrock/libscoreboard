@@ -8,10 +8,10 @@
         "ext-pthreads": "*",
         "ext-json": "*",
         "ext-mysqli": "*",
-        "pocketmine/pocketmine-mp": "4.0.0-BETA11"
+        "pocketmine/pocketmine-mp": "4.0.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "0.12.98"
+        "phpstan/phpstan": "1.2.0"
     },
     "autoload": {
         "psr-4": {
